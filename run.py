@@ -35,7 +35,6 @@ def get_sales_data():
             break
     return sales_data
 
-
 def validate_data(values):
     """
     Inside try block, converts values to ints.
@@ -51,35 +50,25 @@ def validate_data(values):
         return False
     return True
 
-def update_sales_worksheet(row):
-    """
-    Update sales worksheet, add new row with the list data provided.
-    """
-    print('updating sales worksheet')
-    sales_worksheet = SHEET.worksheet('sales')
-    sales_worksheet.append_row(row)
-    print("sales worksheet updated")
-
 def calculate_surplus(sales_row):
     """
     Compare sales with stock and calculate surplus as:
     stock - sales
     """
-    print("Calculating surplus")
+    print("Calculating surplus\n")
     stock = SHEET.worksheet('stock').get_all_values()
-    pprint(stock)
     stock_row = stock[-1]
     surplus_row = [int(stock_val)-sale_val for stock_val,sale_val in zip(stock_row,sales_row)]
     return surplus_row
 
-def update_surplus_worksheet(row):
+def update_worksheet(row, worksheet):
     """
-    Update surplus worksheet, add new row with surplus that is computed.
+    Append row to end of worksheet specified.
     """
-    print("Updating surplus worksheet")
-    surplus_worksheet = SHEET.worksheet('surplus')
-    surplus_worksheet.append_row(row)
-    print('surplus worksheet updated')
+    print(f"Updating {worksheet} worksheet")
+    target_worksheet = SHEET.worksheet(worksheet)
+    target_worksheet.append_row(row)
+    print(f'{worksheet} worksheet updated\n')
 
 def main():
     """
@@ -87,9 +76,9 @@ def main():
     """
     data = get_sales_data()
     sales_data = [int(val) for val in data]
-    update_sales_worksheet(sales_data)
+    update_worksheet(sales_data, 'sales')
     surplus_row = calculate_surplus(sales_data)
-    update_surplus_worksheet(surplus_row)
+    update_worksheet(surplus_row, 'surplus')
 
 if __name__ == "__main__":
     print("Welcome to Love Sandwiches data automation")
