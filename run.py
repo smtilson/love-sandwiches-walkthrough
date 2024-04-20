@@ -70,6 +70,16 @@ def update_worksheet(row, worksheet):
     target_worksheet.append_row(row)
     print(f'{worksheet} worksheet updated\n')
 
+def get_last_five_entries_sales():
+    """
+    Get last five entries of sales data.
+    """
+    sales = SHEET.worksheet('sales')
+    columns = []
+    for index in range(1,7):
+        columns.append(sales.col_values(index)[-5:])
+    pprint(columns)
+
 def main():
     """
     Run main program loop
@@ -82,4 +92,5 @@ def main():
 
 if __name__ == "__main__":
     print("Welcome to Love Sandwiches data automation")
-    main()
+    #main()
+    get_last_five_entries_sales()
